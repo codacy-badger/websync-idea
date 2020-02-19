@@ -9,9 +9,14 @@
   </description>
   <depends>com.intellij.modules.java</depends>
 
-  <project-components>
+  <application-components>
     <component>
 <!--      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>-->
+    </component>
+  </application-components>
+
+  <project-components>
+    <component>
       <implementation-class>org.websync.InitializationComponent</implementation-class>
     </component>
   </project-components>
