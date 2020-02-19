@@ -9,11 +9,11 @@
   </description>
   <depends>com.intellij.modules.java</depends>
 
-  <application-components>
-    <component>
+<!--  <application-components>-->
+<!--    <component>-->
 <!--      <implementation-class>com.epam.sha.intellij.locatorupdater.LocatorUpdaterComponent</implementation-class>-->
-    </component>
-  </application-components>
+<!--    </component>-->
+<!--  </application-components>-->
 
   <project-components>
     <component>
