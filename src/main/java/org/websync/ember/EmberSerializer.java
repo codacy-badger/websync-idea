@@ -65,6 +65,7 @@ public class EmberSerializer implements SessionWebSerializer {
     }
 
     @Override
+    // This is not working, need to fix
     public Collection<SessionWeb> deserialize(String data) {
         ObjectMapper mapper = new ObjectMapper();
 //        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
