@@ -1,5 +1,7 @@
 package org.websync.sessionweb;
 
+import org.websync.jdi.JdiAttribute;
+import org.websync.jdi.JdiElement;
 import org.websync.sessionweb.models.SessionWeb;
 import org.websync.sessionweb.psimodels.PsiComponentType;
 import org.websync.sessionweb.psimodels.PsiPageType;
@@ -46,9 +48,11 @@ public class PsiSessionWebProvider implements SessionWebPovider {
         return cachedSessionWebs;
     }
 
-    final public String JDI_JSITE = "JSite";
-    final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
-    final public String JDI_COMPONENT = "com.epam.jdi.light.elements.base.UIBaseElement";
+    final public String JDI_JSITE = JdiAttribute.JDI_JSITE.value.substring(
+            JdiAttribute.JDI_JSITE.value.lastIndexOf("."),
+            JdiAttribute.JDI_JSITE.value.length() - 1);
+    final public String JDI_WEB_PAGE = JdiElement.JDI_WEB_PAGE.value;
+    final public String JDI_COMPONENT = JdiElement.JDI_UI_BASE_ELEMENT.value;
 
     private Collection<PsiWebsite> getWebsites(Project project) {
         long startTime = System.currentTimeMillis();
@@ -72,7 +76,7 @@ public class PsiSessionWebProvider implements SessionWebPovider {
     private Collection<PsiPageType> getPages(Project project) {
         long startTime = System.currentTimeMillis();
 
-        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEBPAGE);
+        Collection<PsiClass> psiClasses = getDerivedClasses(project, JDI_WEB_PAGE);
 
         Collection<PsiPageType> pageTypes = psiClasses.stream().map(c -> {
             PsiPageType page = new PsiPageType(c);

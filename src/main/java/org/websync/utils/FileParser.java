@@ -2,6 +2,7 @@ package org.websync.utils;
 
 import org.websync.browserConnection.SessionWebSerializer;
 import org.websync.ember.EmberSerializer;
+import org.websync.jdi.JdiElement;
 import org.websync.sessionweb.PsiSessionWebProvider;
 import org.websync.sessionweb.models.SessionWeb;
 import com.intellij.openapi.application.ApplicationManager;
@@ -68,8 +69,6 @@ public class FileParser {
         });
     }
 
-    final public String JDI_WEBPAGE = "com.epam.jdi.light.elements.composite.WebPage";
-
     private void printClasses() {
         Project[] projects = ProjectManager.getInstance().getOpenProjects();
         if (projects.length == 0) {
@@ -89,7 +88,7 @@ public class FileParser {
         GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
 
         ApplicationManager.getApplication().runReadAction(() -> {
-            PsiClass webPagePsiClass = javaPsiFacade.findClass(JDI_WEBPAGE, allScope);
+            PsiClass webPagePsiClass = javaPsiFacade.findClass(JdiElement.JDI_WEB_PAGE.value, allScope);
             List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
                     .stream().collect(Collectors.toList());
 
