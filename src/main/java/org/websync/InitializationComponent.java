@@ -12,19 +12,19 @@ public class InitializationComponent implements BaseComponent {
     DebugFileWatcher debugFileWatcher = new DebugFileWatcher(new File("c:/temp/text.txt"), new FileParser());
 
     public void initComponent() {
-        System.out.println("Initializing...");
-
-        debugFileWatcher.start();
-
-        System.out.println("Initialized.");
+//        System.out.println("Initializing...");
+//
+//        debugFileWatcher.start();
+//
+//        System.out.println("Initialized.");
     }
 
     public void disposeComponent() {
-        System.out.println("Disposing...");
-
-        debugFileWatcher.stop();
-
-        System.out.println("Disposed.");
+//        System.out.println("Disposing...");
+//
+//        debugFileWatcher.stop();
+//
+//        System.out.println("Disposed.");
     }
 
     @NotNull
