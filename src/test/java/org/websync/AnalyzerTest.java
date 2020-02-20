@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.Arrays;
 
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
