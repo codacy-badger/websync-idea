@@ -1,32 +1,18 @@
 package org.websync;
 
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.file.PsiFileImplUtil;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileSystemItemUtil;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassOwner;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
-import com.intellij.psi.search.searches.ClassInheritorsSearch;
-import com.intellij.psi.util.PsiClassUtil;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.testFramework.HeavyPlatformTestCase;
-import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import org.junit.Assert;
 import org.junit.Test;
-import org.websync.jdi.JdiElement;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 //public class AnalyzerTest extends HeavyPlatformTestCase {
@@ -38,8 +24,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
     Path path = Paths.get(rootPath + srcPath);
 
     @Override
-    public String getTestDataPath()
-    {
+    public String getTestDataPath() {
         return rootPath + srcPath;
     }
 
@@ -48,7 +33,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         return rootPath + srcPath;
     }
 
-//    @Override
+    //    @Override
     protected Path getProjectDirOrFile() {
         return path;
     }
@@ -66,17 +51,40 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
             System.out.println("- " + f);
         });
 
+        GlobalSearchScope projectScope = GlobalSearchScope.allScope(getProject());
+
+        System.out.println();
+        System.out.println("PsiFiles:");
+        Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
+            Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope)).forEach(psiFile -> {
+                System.out.println("- " + psiFile.getVirtualFile().getPath());
+            });
+        });
+
         System.out.println();
         System.out.println("Classes:");
         Arrays.stream(PsiShortNamesCache.getInstance(getProject()).getAllClassNames()).forEach(c -> {
             System.out.println("- " + c);
         });
 
+        System.out.println();
+        System.out.println("PsiClasses:");
+        Arrays.stream(FilenameIndex.getAllFilenames(getProject()))
+                .filter(f -> f.endsWith(".java"))
+                .forEach(f -> {
+                    Arrays.stream(FilenameIndex.getFilesByName(getProject(), f, projectScope))
+                            .forEach(psiFile -> {
+                                PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
+                                System.out.println("- " + psiClass.getQualifiedName());
+                            });
+                });
+
         // Start Analyzer of JDI Project structure
         // ...
 
         // Some tests
         // ...
+        System.out.println();
     }
 
     @Test
