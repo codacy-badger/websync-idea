@@ -17,21 +17,22 @@ import java.util.Arrays;
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 //public class AnalyzerTest extends HeavyPlatformTestCase {
 
-    String rootPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
-    String srcPath = "src\\";
+    // see https://www.jetbrains.org/intellij/sdk/docs/basics/testing_plugins/test_project_and_testdata_directories.html
+    // first paragraph
+    String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
     String javaPath = "main\\java\\";
     String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
     String exampleClassFile = "DatesPage.java";
-    Path path = Paths.get(rootPath + srcPath);
+    Path path = Paths.get(srcPath);
 
     @Override
     public String getTestDataPath() {
-        return rootPath + srcPath;
+        return srcPath;
     }
 
     @Override
     public String getBasePath() {
-        return rootPath + srcPath;
+        return srcPath;
     }
 
     //    @Override
@@ -85,6 +86,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 
         // Some tests
         // ...
+
         System.out.println();
     }
 
