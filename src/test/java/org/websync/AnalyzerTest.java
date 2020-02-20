@@ -21,6 +21,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
     String srcPath = "src\\";
     String javaPath = "main\\java\\";
     String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
+    String exampleClassFile = "DatesPage.java";
     Path path = Paths.get(rootPath + srcPath);
 
     @Override
