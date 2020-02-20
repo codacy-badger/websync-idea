@@ -1,11 +1,18 @@
 package org.websync;
 
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiDocumentManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.file.PsiFileImplUtil;
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.PsiFileSystemItemUtil;
+import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.psi.search.searches.ClassInheritorsSearch;
+import com.intellij.psi.util.PsiClassUtil;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testFramework.HeavyPlatformTestCase;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
@@ -13,57 +20,32 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.websync.jdi.JdiElement;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 //public class AnalyzerTest extends HeavyPlatformTestCase {
 
-//    @Test
-//    public void getProjectStructure() {
-//        Assert.assertEquals(0, 0);
-//        // Open IDE
-//        // ...
-//
-//        // Open JDI Project
-//        // ...
-//
-//        // Close window 'Tip of the Day'
-//        // ...
-//
-//        // Wait opening project files, indexing project files and downloading project dependencies
-//        // ...
-//
-//        // Get PSI structure of JDI Project
-//        // ...
-//
-//        // Start Analyzer of JDI Project structure
-//        // ...
-//
-//        // Some tests
-//        // ...
-//
-//        // Close IDE
-//        // ...
-//
-//        // Close dialog 'Confirm Exit'
-//        // ...
-//    }
-
     String rootPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\";
-    Path path = Paths.get(rootPath);
+    String srcPath = "src\\";
+    String javaPath = "main\\java\\";
+    String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
+    Path path = Paths.get(rootPath + srcPath);
 
     @Override
     public String getTestDataPath()
     {
-        return rootPath;
+        return rootPath + srcPath;
     }
 
     @Override
     public String getBasePath() {
-        return rootPath;
+        return rootPath + srcPath;
     }
 
 //    @Override
@@ -72,33 +54,69 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
     }
 
     @Test
-    public void test() {
-//        IdeaTestFixtureFactory.getFixtureFactory().createFixtureBuilder();
-//        JavaTestFixtureFactoryImpl.
-//        HeavyPlatformTestCase.doAutodetectPlatformPrefix();
-        // Open java classes in project directory
-//        Project project = HeavyPlatformTestCase.createProject(path);
+    public void test0() {
+        long startTime = System.currentTimeMillis();
+        myFixture.copyDirectoryToProject("", "");
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
 
-        // Get PSI structure of JDI Project
-        PsiDocumentManager.getInstance(getProject()).commitAllDocuments();
-        getProject().getProjectFilePath();
+        System.out.println();
+        System.out.println("Filenames:");
+        Arrays.stream(FilenameIndex.getAllFilenames(getProject())).forEach(f -> {
+            System.out.println("- " + f);
+        });
 
-//        JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(getProject());
-        JavaPsiFacade javaPsiFacade = super.myFixture.getJavaFacade();
-//        super.myFixture.copyDirectoryToProject()
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(getProject());
-
-        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
-
-        PsiClass webPagePsiClass = javaPsiFacade.findClass(JdiElement.JDI_WEB_PAGE.value, allScope);
-        List<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll()
-                .stream().collect(Collectors.toList());
-
+        System.out.println();
         System.out.println("Classes:");
-        classes.forEach(c -> System.out.println("*" + c.getQualifiedName()));
+        Arrays.stream(PsiShortNamesCache.getInstance(getProject()).getAllClassNames()).forEach(c -> {
+            System.out.println("- " + c);
+        });
 
         // Start Analyzer of JDI Project structure
         // ...
+
+        // Some tests
+        // ...
+    }
+
+    @Test
+    public void test1() {
+        long startTime = System.currentTimeMillis();
+        PsiFile[] psiFiles = myFixture.configureByFiles(
+                javaPath + classPath + "ContactFormPage.java",
+                javaPath + classPath + "ContactsPage.java",
+                javaPath + classPath + "DatesPage.java",
+                javaPath + classPath + "HomePage.java",
+                javaPath + classPath + "Html5Page.java",
+                javaPath + classPath + "JDIPerformancePage.java",
+                javaPath + classPath + "UsersPage.java"
+        );
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+
+        // example
+        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
+
+        // example
+        PsiShortNamesCache.getInstance(getProject()).getAllClassNames();
+
+        // Some tests
+        // ...
+    }
+
+    public void test2() {
+        long startTime = System.currentTimeMillis();
+        VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
+        PsiFile psiFile = myFixture.getPsiManager().findFile(virtualFile);
+
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime);
+
+        // example
+        PsiClass clazz = myFixture.findClass("org.mytests.uiobjects.example.site.pages.ContactFormPage");
+
+        // example
+        PsiShortNamesCache.getInstance(getProject()).getAllClassNames();
 
         // Some tests
         // ...
