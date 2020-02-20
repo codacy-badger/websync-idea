@@ -18,7 +18,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 //public class AnalyzerTest extends HeavyPlatformTestCase {
 
     // see https://www.jetbrains.org/intellij/sdk/docs/basics/testing_plugins/test_project_and_testdata_directories.html
-    // first paragraph
+    // first paragraph about src
     String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
     String javaPath = "main\\java\\";
     String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
