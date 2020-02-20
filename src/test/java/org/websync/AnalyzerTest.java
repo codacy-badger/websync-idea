@@ -45,7 +45,8 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        System.out.println(endTime - startTime);
+        System.out.println(String.format("Time of coping from directory contained java classes to virtual project %s",
+                endTime - startTime));
 
         System.out.println();
         System.out.println("Filenames:");
