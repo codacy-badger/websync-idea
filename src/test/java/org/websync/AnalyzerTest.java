@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.Arrays;
 
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
@@ -41,9 +42,9 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 
     @Test
     public void test0() {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(endTime - startTime);
 
         System.out.println();
@@ -90,7 +91,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 
     @Test
     public void test1() {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         PsiFile[] psiFiles = myFixture.configureByFiles(
                 javaPath + classPath + "ContactFormPage.java",
                 javaPath + classPath + "ContactsPage.java",
@@ -100,7 +101,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
                 javaPath + classPath + "JDIPerformancePage.java",
                 javaPath + classPath + "UsersPage.java"
         );
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(endTime - startTime);
 
         // example
@@ -114,11 +115,11 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
     }
 
     public void test2() {
-        long startTime = System.currentTimeMillis();
+        long startTime = System.nanoTime();
         VirtualFile virtualFile = myFixture.copyFileToProject(javaPath + classPath + "ContactFormPage.java");
         PsiFile psiFile = myFixture.getPsiManager().findFile(virtualFile);
 
-        long endTime = System.currentTimeMillis();
+        long endTime = System.nanoTime();
         System.out.println(endTime - startTime);
 
         // example
