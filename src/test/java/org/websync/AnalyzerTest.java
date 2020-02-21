@@ -122,7 +122,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
             System.out.println(c.getQualifiedName());
 
             System.out.println(
-                    String.format("     SuperTypes: %s",
+                    String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSuperTypes())
                                     .map(s -> s.getClassName())
                                     .collect(Collectors.toList()))));
@@ -132,7 +132,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
             System.out.println(String.format("     SuperClass: %s", c.getSuperClass()));
 
             System.out.println(
-                    String.format("     SuperTypes: %s",
+                    String.format("     SuperTypes[]: %s",
                             String.join(", ", Arrays.stream(c.getSupers())
                                     .map(s -> s.getName())
                                     .collect(Collectors.toList()))));
