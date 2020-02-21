@@ -44,6 +44,8 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 
     @Test
     public void test0() {
+        System.out.println(String.format("TempDir = %s", this.myFixture.getTempDirPath()));
+
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
