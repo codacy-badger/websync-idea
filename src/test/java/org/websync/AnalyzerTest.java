@@ -13,12 +13,14 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
 //public class AnalyzerTest extends HeavyPlatformTestCase {
 
     // see https://www.jetbrains.org/intellij/sdk/docs/basics/testing_plugins/test_project_and_testdata_directories.html
-    // first paragraph about src
+    // first paragraph about 'src'
     String srcPath = "C:\\Users\\Vitalii_Balitckii\\IdeaProjects\\jdi-light-testng-template\\src\\";
     String javaPath = "main\\java\\";
     String classPath = "org\\mytests\\uiobjects\\example\\site\\pages\\";
@@ -45,7 +47,8 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
-        System.out.println(String.format("Time of coping from directory contained java classes to virtual project %s",
+        System.out.println(
+                String.format("%s - the time of coping from directory contained java classes to virtual project",
                 endTime - startTime));
 
         System.out.println();
@@ -89,6 +92,49 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         // ...
 
         System.out.println();
+    }
+
+    @Test()
+    public void test01() {
+        long startTime = System.nanoTime();
+        myFixture.copyDirectoryToProject("", "");
+        long endTime = System.nanoTime();
+        System.out.println(
+                String.format("%s - the copy time from directory contained java classes to virtual project",
+                endTime - startTime));
+
+        // To get inheritors of WebPage class
+        List<PsiClass> psiClassList =  FilenameIndex.getAllFilesByExt(getProject(), "java").stream()
+                .map(f -> {
+                    PsiFile psiFile = myFixture.getPsiManager().findFile(f);
+                    PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
+                    return psiClass;
+                }).collect(Collectors.toList());
+
+        List<PsiClass> psiWebPages = psiClassList.stream().filter(c -> Arrays.stream(c.getSuperTypes())
+                .filter(s -> s.getClassName().equals("WebPage"))
+                .count() > 0)
+                .collect(Collectors.toList());
+
+        psiWebPages.forEach(c -> {
+            System.out.println(c.getQualifiedName());
+
+            System.out.println(
+                    String.format("     SuperTypes: %s",
+                            String.join(", ", Arrays.stream(c.getSuperTypes())
+                                    .map(s -> s.getClassName())
+                                    .collect(Collectors.toList()))));
+
+            System.out.println(String.format("     SuperClassType: %s", c.getSuperClassType().getName()));
+
+            System.out.println(String.format("     SuperClass: %s", c.getSuperClass()));
+
+            System.out.println(
+                    String.format("     SuperTypes: %s",
+                            String.join(", ", Arrays.stream(c.getSupers())
+                                    .map(s -> s.getName())
+                                    .collect(Collectors.toList()))));
+        });
     }
 
     @Test
