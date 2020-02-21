@@ -112,7 +112,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
                     PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
                     return psiClass;
                 }).collect(Collectors.toList());
-
+        q
         List<PsiClass> psiWebPages = psiClassList.stream().filter(c -> Arrays.stream(c.getSuperTypes())
                 .filter(s -> s.getClassName().equals("WebPage"))
                 .count() > 0)
