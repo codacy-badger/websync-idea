@@ -49,19 +49,18 @@ public class PsiSessionWebProvider implements SessionWebPovider {
     }
 
     final public String JDI_JSITE = JdiAttribute.JDI_JSITE.value.substring(
-            JdiAttribute.JDI_JSITE.value.lastIndexOf("."),
-            JdiAttribute.JDI_JSITE.value.length() - 1);
+            JdiAttribute.JDI_JSITE.value.lastIndexOf(".") + 1);
     final public String JDI_WEB_PAGE = JdiElement.JDI_WEB_PAGE.value;
     final public String JDI_COMPONENT = JdiElement.JDI_UI_BASE_ELEMENT.value;
 
     private Collection<PsiWebsite> getWebsites(Project project) {
         long startTime = System.currentTimeMillis();
 
-        GlobalSearchScope projectScope = GlobalSearchScope.projectScope(project);
+        GlobalSearchScope scope = GlobalSearchScope.projectScope(project);
         PsiElementFactoryImpl psiElementFactory = new PsiElementFactoryImpl(project);
         PsiClass psiClass = psiElementFactory.createAnnotationType(JDI_JSITE);
 
-        Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(psiClass, projectScope).findAll().stream().map(c -> {
+        Collection<PsiWebsite> websites = AnnotatedElementsSearch.searchPsiClasses(psiClass, scope).findAll().stream().map(c -> {
             PsiWebsite website = new PsiWebsite(c);
             website.Fill();
             return website;
@@ -109,9 +108,9 @@ public class PsiSessionWebProvider implements SessionWebPovider {
 
     private Collection<PsiClass> getDerivedClasses(Project project, String classQualifiedName) {
         JavaPsiFacade javaPsiFacade = JavaPsiFacade.getInstance(project);
-        GlobalSearchScope allScope = GlobalSearchScope.allScope(project);
+        GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
-        PsiClass webPagePsiClass = javaPsiFacade.findClass(classQualifiedName, allScope);
+        PsiClass webPagePsiClass = javaPsiFacade.findClass(classQualifiedName, scope);
         Collection<PsiClass> classes = ClassInheritorsSearch.search(webPagePsiClass).findAll();
         return classes;
     }

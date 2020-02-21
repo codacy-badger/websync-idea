@@ -9,6 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import org.junit.Test;
+import org.websync.sessionweb.PsiSessionWebProvider;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -96,7 +97,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         System.out.println();
     }
 
-    @Test()
+    @Test
     public void test01() {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
@@ -112,7 +113,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
                     PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
                     return psiClass;
                 }).collect(Collectors.toList());
-        q
+
         List<PsiClass> psiWebPages = psiClassList.stream().filter(c -> Arrays.stream(c.getSuperTypes())
                 .filter(s -> s.getClassName().equals("WebPage"))
                 .count() > 0)
@@ -137,6 +138,18 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
                                     .map(s -> s.getName())
                                     .collect(Collectors.toList()))));
         });
+    }
+
+    @Test
+    public void test02(){
+        long startTime = System.nanoTime();
+        myFixture.copyDirectoryToProject("", "");
+        long endTime = System.nanoTime();
+        System.out.println(
+                String.format("%s - the copy time from directory contained java classes to virtual project",
+                        endTime - startTime));
+
+        new PsiSessionWebProvider(getProject()).getSessionWebs(false);
     }
 
     @Test
