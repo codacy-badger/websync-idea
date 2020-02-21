@@ -52,7 +52,7 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         long endTime = System.nanoTime();
         System.out.println(
                 String.format("%s - the time of coping from directory contained java classes to virtual project",
-                endTime - startTime));
+                        endTime - startTime));
 
         System.out.println();
         System.out.println("Filenames:");
@@ -104,10 +104,10 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
         long endTime = System.nanoTime();
         System.out.println(
                 String.format("%s - the copy time from directory contained java classes to virtual project",
-                endTime - startTime));
+                        endTime - startTime));
 
         // To get inheritors of WebPage class
-        List<PsiClass> psiClassList =  FilenameIndex.getAllFilesByExt(getProject(), "java").stream()
+        List<PsiClass> psiClassList = FilenameIndex.getAllFilesByExt(getProject(), "java").stream()
                 .map(f -> {
                     PsiFile psiFile = myFixture.getPsiManager().findFile(f);
                     PsiClass psiClass = ((PsiClassOwner) psiFile).getClasses()[0];
@@ -141,13 +141,15 @@ public class AnalyzerTest extends LightJavaCodeInsightFixtureTestCase {
     }
 
     @Test
-    public void test02(){
+    public void test02() {
         long startTime = System.nanoTime();
         myFixture.copyDirectoryToProject("", "");
         long endTime = System.nanoTime();
         System.out.println(
                 String.format("%s - the copy time from directory contained java classes to virtual project",
                         endTime - startTime));
+
+        getProject();
 
         new PsiSessionWebProvider(getProject()).getSessionWebs(false);
     }
